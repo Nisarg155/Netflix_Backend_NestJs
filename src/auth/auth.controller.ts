@@ -1,7 +1,51 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import {
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { RegisterDto } from './dto/register.dto';
+import { RegisterResponseDto } from './dto/register-response.dto';
+import { LoginResponseDto } from './dto/login-response.dto';
+import { LoginDto } from './dto/login.dto';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @ApiCreatedResponse({
+    description: 'User registered successfully',
+    type: RegisterResponseDto,
+  })
+  @ApiConflictResponse({
+    description: 'User already exists',
+  })
+  @ApiBadRequestResponse({
+    description: 'Validation error',
+  })
+  @Post('register')
+  @HttpCode(HttpStatus.CREATED)
+  async register(@Body() registrationData: RegisterDto) {
+    return this.authService.register(registrationData);
+  }
+
+  @Post('login')
+  @ApiOkResponse({
+    description: 'User logged in successfully',
+    type: LoginResponseDto,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Invalid credentials or account does not exist',
+  })
+  @ApiBadRequestResponse({
+    description: 'Validation error',
+  })
+  async login(@Body() loginData: LoginDto) {
+    return this.authService.login(loginData);
+  }
 }

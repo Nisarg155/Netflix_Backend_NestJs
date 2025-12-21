@@ -1,4 +1,5 @@
 export default () => ({
   appName: process.env.APP_NAME || 'netflix backend',
-  database_url: process.env.DATABASE_URL,
+  databaseUrl: process.env.DATABASE_URL,
+  jwtSecret: process.env.JWT_SECRET,
 });
