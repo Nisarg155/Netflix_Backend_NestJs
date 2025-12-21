@@ -98,6 +98,7 @@ export class AuthService {
     const { password, ...result } = existingUser;
     return {
       user: result,
+      token: token,
       message: 'User Login Successfull',
     };
   }
