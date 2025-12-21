@@ -15,10 +15,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
-    // ✅ Prisma known errors
+    // ✅ Prisma errors
     if (exception instanceof Prisma.PrismaClientKnownRequestError) {
       return response.status(HttpStatus.BAD_REQUEST).json({
-        statusCode: HttpStatus.BAD_REQUEST,
+        statusCode: 400,
         message: exception.message,
         prismaCode: exception.code,
         path: request.url,
@@ -26,20 +26,20 @@ export class AllExceptionsFilter implements ExceptionFilter {
       });
     }
 
-    // ✅ HTTP exceptions
-    const status =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
+    // ✅ HTTP errors
+    if (exception instanceof HttpException) {
+      return response.status(exception.getStatus()).json({
+        statusCode: exception.getStatus(),
+        message: exception.getResponse(),
+        path: request.url,
+        timestamp: new Date().toISOString(),
+      });
+    }
 
-    const message =
-      exception instanceof HttpException
-        ? exception.getResponse()
-        : 'Internal server error';
-
-    response.status(status).json({
-      statusCode: status,
-      message,
+    // ❌ Unknown
+    return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      statusCode: 500,
+      message: 'Internal server error',
       path: request.url,
       timestamp: new Date().toISOString(),
     });
