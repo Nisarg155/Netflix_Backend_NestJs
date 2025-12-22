@@ -8,11 +8,13 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { PlanService } from './plan.service';
 import { ApiTags } from '@nestjs/swagger';
 import { CreatePlanDto } from './dto/create-plan.dto';
 import { UpdatePlanDto } from './dto/update-plan.dto';
+import { UserAuthGuard } from '../auth/guards/user-auth-guard.service';
 
 @ApiTags('Plan')
 @Controller('plan')
@@ -31,12 +33,14 @@ export class PlanController {
     return await this.planService.update(updatePlanDto);
   }
 
+  @UseGuards(UserAuthGuard)
   @Get('all')
   @HttpCode(HttpStatus.OK)
   async getAll() {
     return this.planService.findAll();
   }
 
+  @UseGuards(UserAuthGuard)
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') id: string) {
