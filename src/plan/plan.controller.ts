@@ -15,23 +15,18 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreatePlanDto } from './dto/create-plan.dto';
 import { UpdatePlanDto } from './dto/update-plan.dto';
 import { UserAuthGuard } from '../auth/guards/user-auth-guard.service';
-import { AdminAuthGuard } from '../auth/guards/admin-auth-guard.service';
 
 @ApiTags('Plan')
 @Controller('plan')
 export class PlanController {
   constructor(private readonly planService: PlanService) {}
 
-  @ApiBearerAuth('JWT-auth')
-  @UseGuards(AdminAuthGuard)
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createPlanDto: CreatePlanDto) {
     return await this.planService.create(createPlanDto);
   }
 
-  @ApiBearerAuth('JWT-auth')
-  @UseGuards(AdminAuthGuard)
   @Put('update')
   @HttpCode(HttpStatus.OK)
   async update(@Body() updatePlanDto: UpdatePlanDto) {
@@ -54,8 +49,6 @@ export class PlanController {
     return await this.planService.findOne(id);
   }
 
-  @ApiBearerAuth('JWT-auth')
-  @UseGuards(AdminAuthGuard)
   @Delete('delete/:id')
   @HttpCode(HttpStatus.OK)
   async delete(@Param('id') id: string) {
