@@ -7,7 +7,7 @@ import { PrismaService } from '../db/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { compare, genSalt, hash } from 'bcrypt';
-import { User } from '@prisma/client';
+import { Admin, User } from '@prisma/client';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 
@@ -18,7 +18,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private configService: ConfigService,
   ) {}
-
+  // User Methods
   private async hashPassword(password: string): Promise<string> {
     const Salt = await genSalt(10);
     return await hash(password, Salt);
@@ -100,6 +100,77 @@ export class AuthService {
       user: result,
       token: token,
       message: 'User Login Successfull',
+    };
+  }
+
+  // Admin Methods
+
+  private generateAdminToken(admin: Admin) {
+    const payload = {
+      email: admin.email,
+      sub: admin.adminId,
+      name: admin.name,
+    };
+
+    return this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('adminJwtSecret'),
+      expiresIn: '15m',
+    });
+  }
+
+  async getAdminById(adminId: string) {
+    const admin = await this.prismaService.admin.findUnique({
+      where: { adminId: adminId },
+    });
+
+    if (!admin) {
+      throw new UnauthorizedException('Admin not found');
+    }
+    const { password, ...result } = admin;
+    return result;
+  }
+
+  async createAdmin(admin: RegisterDto) {
+    const existingAdmin = await this.prismaService.admin.findUnique({
+      where: { email: admin.email },
+    });
+
+    if (!existingAdmin) {
+      admin.password = await hash(admin.password, 10);
+
+      const newAdmin = await this.prismaService.admin.create({
+        data: admin,
+      });
+
+      const { password, ...result } = newAdmin;
+      return {
+        message: 'Admin created successfully!',
+        admin: result,
+      };
+    } else {
+      throw new ConflictException('Admin already exists!');
+    }
+  }
+
+  async loginAdmin(admin: LoginDto) {
+    const existingAdmin = await this.prismaService.admin.findUnique({
+      where: { email: admin.email },
+    });
+
+    if (
+      !existingAdmin ||
+      !(await this.verifyPassword(admin.password, existingAdmin.password))
+    ) {
+      throw new UnauthorizedException(
+        'Invalid Credentials or Admin does not exist ',
+      );
+    }
+    const { password, ...result } = existingAdmin;
+    const token = this.generateAdminToken(existingAdmin);
+    return {
+      message: 'Admin login successfully!',
+      admin: result,
+      token: token,
     };
   }
 }

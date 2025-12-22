@@ -26,6 +26,8 @@ import { LoginThrottlerGuard } from './guards/login-throttler';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  // User Routes
+
   @ApiCreatedResponse({
     description: 'User registered successfully',
     type: RegisterResponseDto,
@@ -56,5 +58,20 @@ export class AuthController {
   })
   async login(@Body() loginData: LoginDto) {
     return this.authService.login(loginData);
+  }
+
+  // Admin Routes
+
+  @Post('create-admin')
+  @HttpCode(HttpStatus.CREATED)
+  async createAdmin(@Body() adminData: RegisterDto) {
+    return this.authService.createAdmin(adminData);
+  }
+
+  @UseGuards(LoginThrottlerGuard)
+  @Post('admin-login')
+  @HttpCode(HttpStatus.OK)
+  async loginAdmin(@Body() adminData: LoginDto) {
+    return this.authService.loginAdmin(adminData);
   }
 }

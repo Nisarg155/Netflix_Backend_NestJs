@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { PlanService } from './plan.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreatePlanDto } from './dto/create-plan.dto';
 import { UpdatePlanDto } from './dto/update-plan.dto';
 import { UserAuthGuard } from '../auth/guards/user-auth-guard.service';
@@ -33,6 +33,7 @@ export class PlanController {
     return await this.planService.update(updatePlanDto);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(UserAuthGuard)
   @Get('all')
   @HttpCode(HttpStatus.OK)
@@ -40,6 +41,7 @@ export class PlanController {
     return this.planService.findAll();
   }
 
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(UserAuthGuard)
   @Get(':id')
   @HttpCode(HttpStatus.OK)
