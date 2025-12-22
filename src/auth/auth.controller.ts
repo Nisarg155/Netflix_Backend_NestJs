@@ -1,4 +1,11 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   ApiBadRequestResponse,
@@ -12,6 +19,7 @@ import { RegisterDto } from './dto/register.dto';
 import { RegisterResponseDto } from './dto/register-response.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { LoginDto } from './dto/login.dto';
+import { LoginThrottlerGuard } from './guards/login-throttler';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -34,6 +42,7 @@ export class AuthController {
     return this.authService.register(registrationData);
   }
 
+  @UseGuards(LoginThrottlerGuard)
   @Post('login')
   @ApiOkResponse({
     description: 'User logged in successfully',
