@@ -12,6 +12,12 @@ datasource db {
   provider = "postgresql"
 }
 
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}
+
 model User {
   userId   String @id @default(uuid())
   name     String @db.VarChar(50)
@@ -20,4 +26,31 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  subscriptions Subscription[]
+}
+
+model Plan {
+  planId       String @id @default(uuid())
+  name         String @unique @db.VarChar(50)
+  maxUsers     Int
+  maxWatchlist Int // -1 = Unlimited 
+  price        Int
+
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  subId     String             @id @default(uuid())
+  planId    String
+  userId    String
+  startDate DateTime
+  endDate   DateTime
+  status    SubscriptionStatus
+
+  plan Plan @relation(fields: [planId], references: [planId])
+  user User @relation(fields: [userId], references: [userId])
+
+  @@index([userId])
+  @@index([planId])
 }

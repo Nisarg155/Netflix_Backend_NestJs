@@ -30,7 +30,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       return response.status(exception.getStatus()).json({
         statusCode: exception.getStatus(),
-        message: exception.getResponse(),
+        details: exception.getResponse(),
         path: request.url,
         timestamp: new Date().toISOString(),
       });

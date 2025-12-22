@@ -6,6 +6,7 @@ import appConfig from './config/app.config';
 import { PrismaModule } from './db/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { PlanModule } from './plan/plan.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     }),
     PrismaModule,
     AuthModule,
+    PlanModule,
   ],
   controllers: [AppController],
   providers: [AppService],
