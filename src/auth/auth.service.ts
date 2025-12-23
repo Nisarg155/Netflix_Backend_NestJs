@@ -48,8 +48,6 @@ export class AuthService {
       where: { userId: id },
     });
 
-    console.log(user);
-
     if (!user) {
       throw new UnauthorizedException('User not found');
     }

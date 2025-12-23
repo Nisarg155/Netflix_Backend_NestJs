@@ -31,13 +31,15 @@ model User {
 }
 
 model Plan {
-  planId       String @id @default(uuid())
-  name         String @unique @db.VarChar(50)
+  planId       String   @id @default(uuid())
+  name         String   @unique @db.VarChar(50)
   maxUsers     Int
   maxWatchlist Int // -1 = Unlimited 
   price        Int
-  maxQuality   String @default("HD")
-  duration     String @default("30d")
+  maxQuality   String   @default("HD")
+  duration     String   @default("30d")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   subscriptions Subscription[]
 }
@@ -49,6 +51,8 @@ model Subscription {
   startDate DateTime
   endDate   DateTime
   status    SubscriptionStatus
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
 
   plan Plan @relation(fields: [planId], references: [planId])
   user User @relation(fields: [userId], references: [userId])
