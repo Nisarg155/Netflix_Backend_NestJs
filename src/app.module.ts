@@ -7,6 +7,7 @@ import { PrismaModule } from './db/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { PlanModule } from './plan/plan.module';
+import { SubscriptionModule } from './subscription/subscription.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { PlanModule } from './plan/plan.module';
     PrismaModule,
     AuthModule,
     PlanModule,
+    SubscriptionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

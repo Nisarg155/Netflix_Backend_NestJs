@@ -19,6 +19,7 @@ export class PlanService {
         HttpStatus.BAD_REQUEST,
       );
     }
+
     const plan = await this.prismaService.plan.create({
       data: planeData,
     });

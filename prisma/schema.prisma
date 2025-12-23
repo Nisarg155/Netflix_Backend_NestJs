@@ -30,22 +30,14 @@ model User {
   subscriptions Subscription[]
 }
 
-model Admin {
-  adminId  String @id @default(uuid())
-  name     String @db.VarChar(50)
-  email    String @unique @db.VarChar(100)
-  password String @db.VarChar(100)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model Plan {
   planId       String @id @default(uuid())
   name         String @unique @db.VarChar(50)
   maxUsers     Int
   maxWatchlist Int // -1 = Unlimited 
   price        Int
+  maxQuality   String @default("HD")
+  duration     String @default("30d")
 
   subscriptions Subscription[]
 }
