@@ -34,6 +34,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   subscriptions Subscription[]
+  watchlists    Watchlist[]
 }
 
 model Plan {
@@ -82,10 +83,11 @@ model Content {
   type        ContentType
   releaseYear String      @default("No Data")
 
-  movie     Movie?
-  genres    ContentGenre[]
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+  movie      Movie?
+  genres     ContentGenre[]
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  watchlists Watchlist[]
 }
 
 model Movie {
@@ -106,4 +108,17 @@ model ContentGenre {
   content Content @relation(fields: [contentId], references: [contentId], onDelete: Cascade)
 
   @@id([genreId, contentId])
+}
+
+model Watchlist {
+  watchlistId String @id @default(uuid())
+  contentId   String
+  userId      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  content   Content  @relation(fields: [contentId], references: [contentId], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@unique([contentId, userId])
 }

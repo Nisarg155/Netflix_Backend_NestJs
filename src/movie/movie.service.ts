@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../db/prisma.service';
-import { UserDetailsType } from '../auth/type/type';
+import { UserDetailsType } from '../auth/type/userDetails.type';
 import { SubscriptionStatus } from '@prisma/client';
 
 @Injectable()
@@ -139,11 +139,6 @@ export class MovieService {
 
     const LIMIT = 15;
     const skip = (page - 1) * LIMIT;
-
-    console.log(`Searching movies because genre is ${genre}`);
-    console.log('Searching movies because keyword', keyword);
-    console.log('Searching movies because releaseYear', releaseYear);
-
     return this.prismaService.content.findMany({
       where: {
         type: 'MOVIE',
@@ -171,7 +166,11 @@ export class MovieService {
           genres: {
             some: {
               genre: {
-                name: genre,
+                name: {
+                  // to make genre search insensitive to the case
+                  equals: genre,
+                  mode: 'insensitive',
+                },
               },
             },
           },

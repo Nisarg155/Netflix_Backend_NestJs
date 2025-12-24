@@ -9,6 +9,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { PlanModule } from './plan/plan.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { MovieModule } from './movie/movie.module';
+import { WatchlistModule } from './watchlist/watchlist.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { MovieModule } from './movie/movie.module';
     PlanModule,
     SubscriptionModule,
     MovieModule,
+    WatchlistModule,
   ],
   controllers: [AppController],
   providers: [AppService],

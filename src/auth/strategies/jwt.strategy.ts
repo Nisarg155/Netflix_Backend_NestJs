@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { AuthService } from '../auth.service';
 import { ConfigService } from '@nestjs/config';
+import { UserDetailsType } from '../type/userDetails.type';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -25,6 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         email: data.user.email,
         name: data.user.name,
         SubStatus: data.Substatus,
+        plan: data.plan,
       };
     } catch (error) {
       throw new UnauthorizedException('Invalid token error form jwt strategy');

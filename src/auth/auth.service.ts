@@ -58,6 +58,19 @@ export class AuthService {
         orderBy: {
           createdAt: 'desc',
         },
+        select: {
+          status: true,
+          endDate: true,
+          plan: {
+            select: {
+              planId: true,
+              name: true,
+              maxQuality: true,
+              maxUsers: true,
+              maxWatchlist: true,
+            },
+          },
+        },
       });
 
       if (!latestsubscription) {
@@ -66,6 +79,7 @@ export class AuthService {
         return {
           user: result,
           Substatus: 'None',
+          plan: null,
         };
       } else {
         let SubStatus: string = 'ACTIVE';
@@ -83,6 +97,7 @@ export class AuthService {
         return {
           user: result,
           Substatus: SubStatus,
+          plan: latestsubscription.plan,
         };
       }
     });
