@@ -18,6 +18,12 @@ enum SubscriptionStatus {
   CANCELLED
 }
 
+enum ContentType {
+  MOVIE
+  SHOW
+  SERIES
+}
+
 model User {
   userId   String @id @default(uuid())
   name     String @db.VarChar(50)
@@ -59,4 +65,45 @@ model Subscription {
 
   @@index([userId])
   @@index([planId])
+}
+
+model Genre {
+  genreId String @id @default(uuid())
+  name    String @db.VarChar(50)
+
+  contents ContentGenre[]
+}
+
+model Content {
+  contentId   String      @id @default(uuid())
+  title       String      @db.VarChar(50)
+  details     String?
+  language    String[] // Postgres TEXT[]
+  type        ContentType
+  releaseYear String      @default("No Data")
+
+  movie     Movie?
+  genres    ContentGenre[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model Movie {
+  movieId      String @id @default(uuid())
+  contentId    String @unique
+  movieUrl     String @db.VarChar(150)
+  thumbnailUrl String @db.VarChar(150)
+  duration     Int
+
+  content Content @relation(fields: [contentId], references: [contentId], onDelete: Cascade)
+}
+
+model ContentGenre {
+  genreId   String
+  contentId String
+
+  genre   Genre   @relation(fields: [genreId], references: [genreId], onDelete: Cascade)
+  content Content @relation(fields: [contentId], references: [contentId], onDelete: Cascade)
+
+  @@id([genreId, contentId])
 }

@@ -19,11 +19,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: any) {
     try {
-      const user = await this.authService.getUserById(payload.sub);
+      const data = await this.authService.getUserById(payload.sub);
       return {
-        id: user.userId,
-        email: user.email,
-        name: user.name,
+        id: data.user.userId,
+        email: data.user.email,
+        name: data.user.name,
+        SubStatus: data.Substatus,
       };
     } catch (error) {
       throw new UnauthorizedException('Invalid token error form jwt strategy');

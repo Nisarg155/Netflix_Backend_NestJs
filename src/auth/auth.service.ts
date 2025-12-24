@@ -7,7 +7,7 @@ import { PrismaService } from '../db/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { compare, genSalt, hash } from 'bcrypt';
-import { User } from '@prisma/client';
+import { SubscriptionStatus, User } from '@prisma/client';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 
@@ -44,15 +44,48 @@ export class AuthService {
   }
 
   async getUserById(id: string) {
-    const user = await this.prismaService.user.findUnique({
-      where: { userId: id },
-    });
+    return this.prismaService.$transaction(async (tx) => {
+      const user = await tx.user.findUnique({
+        where: { userId: id },
+      });
 
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
-    const { password, ...result } = user;
-    return result;
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      const latestsubscription = await tx.subscription.findFirst({
+        where: { userId: id },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+
+      if (!latestsubscription) {
+        const { password, ...result } = user;
+
+        return {
+          user: result,
+          Substatus: 'None',
+        };
+      } else {
+        let SubStatus: string = 'ACTIVE';
+        const now = new Date();
+        if (latestsubscription.status === SubscriptionStatus.CANCELLED) {
+          SubStatus = 'CANCELLED';
+        } else if (
+          latestsubscription.endDate <= now ||
+          latestsubscription.status === SubscriptionStatus.EXPIRED
+        ) {
+          SubStatus = 'EXPIRED';
+        }
+
+        const { password, ...result } = user;
+        return {
+          user: result,
+          Substatus: SubStatus,
+        };
+      }
+    });
   }
 
   async register(registrationData: RegisterDto) {
