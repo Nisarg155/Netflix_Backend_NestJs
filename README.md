@@ -33,8 +33,8 @@
 ### 1️⃣ Clone & Install
 
 ```bash
-git clone <repo-url>
-cd <project-folder>
+git clone https://github.com/Nisarg155/Netflix_Backend_NestJs.git
+cd Netflix_Backend_NestJs
 npm install
 ```
 
