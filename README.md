@@ -25,74 +25,89 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
+
+---
+
+## 🚀 Project Setup
+
+### 1️⃣ Clone & Install
 
 ```bash
-$ npm install
+git clone <repo-url>
+cd <project-folder>
+npm install
 ```
 
-## Compile and run the project
+---
+
+### 2️⃣ Environment Variables
+
+Create a `.env` file in root:
+
+```env
+DATABASE_URL=your_database_connection_string
+JWT_SECRET=your_jwt_secret
+```
+
+> ⚠️ Required to run the backend locally
+
+---
+
+### 3️⃣ Run Locally
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm run start:dev
 ```
 
-## Run tests
+Backend will run on:
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```
+http://localhost:3000
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 📘 API Documentation
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 🔹 Swagger UI (Local Only)
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+Swagger UI is enabled **only in local development**:
+
+```
+http://localhost:3000/api/docs
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+> Note: Swagger UI is disabled in production (Vercel limitation).
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+### 🔹 Postman API Documentation (Recommended)
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+All APIs are documented and testable via Postman:
 
-## Support
+👉 **Postman Docs**
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```
+https://documenter.getpostman.com/view/33078864/2sBXVZouMj
+```
 
-## Stay in touch
+You can:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+* View all routes
+* See request/response formats
+* Test APIs directly
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 🌐 Production Backend URL
+
+Deployed backend (Vercel):
+
+```
+https://netflix-backend-nest-7d0edbo1f-nisarg155s-projects.vercel.app/
+```
+
+Use this base URL while testing APIs in Postman.
+
+---
+
