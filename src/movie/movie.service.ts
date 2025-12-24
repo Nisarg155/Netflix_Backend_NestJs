@@ -43,7 +43,15 @@ export class MovieService {
         title: true,
         releaseYear: true,
         language: true,
-
+        averageRating: true,
+        ratingCount: true,
+        ratings: {
+          select: {
+            rating: true,
+            comment: true,
+          },
+          take: LIMIT,
+        },
         movie: {
           select: {
             movieUrl: true,
@@ -85,6 +93,15 @@ export class MovieService {
         releaseYear: true,
         language: true,
         details: true,
+        averageRating: true,
+        ratingCount: true,
+        ratings: {
+          select: {
+            rating: true,
+            comment: true,
+          },
+          take: 15,
+        },
 
         movie: {
           select: {
@@ -184,6 +201,15 @@ export class MovieService {
         details: true,
         releaseYear: true,
         language: true,
+        averageRating: true,
+        ratingCount: true,
+        ratings: {
+          select: {
+            rating: true,
+            comment: true,
+          },
+          take: LIMIT,
+        },
         movie: {
           select: {
             movieUrl: true,

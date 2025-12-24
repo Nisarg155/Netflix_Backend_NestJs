@@ -10,6 +10,7 @@ import { PlanModule } from './plan/plan.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { MovieModule } from './movie/movie.module';
 import { WatchlistModule } from './watchlist/watchlist.module';
+import { RatingModule } from './rating/rating.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { WatchlistModule } from './watchlist/watchlist.module';
     SubscriptionModule,
     MovieModule,
     WatchlistModule,
+    RatingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

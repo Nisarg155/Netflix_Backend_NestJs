@@ -35,6 +35,7 @@ model User {
 
   subscriptions Subscription[]
   watchlists    Watchlist[]
+  ratings       Ratings[]
 }
 
 model Plan {
@@ -76,18 +77,20 @@ model Genre {
 }
 
 model Content {
-  contentId   String      @id @default(uuid())
-  title       String      @db.VarChar(50)
-  details     String?
-  language    String[] // Postgres TEXT[]
-  type        ContentType
-  releaseYear String      @default("No Data")
-
-  movie      Movie?
-  genres     ContentGenre[]
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
-  watchlists Watchlist[]
+  contentId     String         @id @default(uuid())
+  title         String         @db.VarChar(50)
+  details       String?
+  language      String[] // Postgres TEXT[]
+  type          ContentType
+  releaseYear   String         @default("No Data")
+  averageRating Int            @default(7) @db.SmallInt
+  ratingCount   Int            @default(20000)
+  movie         Movie?
+  genres        ContentGenre[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  watchlists    Watchlist[]
+  ratings       Ratings[]
 }
 
 model Movie {
@@ -119,6 +122,21 @@ model Watchlist {
   updatedAt DateTime @updatedAt
   content   Content  @relation(fields: [contentId], references: [contentId], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@unique([contentId, userId])
+}
+
+model Ratings {
+  ratingId  String   @id @default(uuid())
+  userId    String
+  contentId String
+  rating    Int      @db.SmallInt
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  content Content @relation(fields: [contentId], references: [contentId], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
   @@unique([contentId, userId])
 }
