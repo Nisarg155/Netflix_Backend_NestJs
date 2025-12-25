@@ -28,6 +28,32 @@
 
 ---
 
+---
+
+## 🧰 Tech Stack & Versions
+
+### Runtime
+- Node.js: v22.14.0
+- npm: 11.7.0
+
+### Framework
+- NestJS (Core): 11.1.9
+- Nest CLI: 11.0.14
+- platform-express: 11.1.9
+- @nestjs/common: 11.1.9
+- @nestjs/swagger: 11.2.3
+- @nestjs/jwt: 11.0.2
+- @nestjs/passport: 11.0.5
+- @nestjs/config: 4.0.2
+- @nestjs/testing: 11.1.9
+- @nestjs/throttler: 6.5.0
+
+### ORM & Database
+- Prisma: 7.2.0
+- Database: PostgreSQL (NeonDB – serverless)
+
+---
+
 ## 🚀 Project Setup
 
 ### 1️⃣ Clone & Install
@@ -54,6 +80,8 @@ JWT_SECRET=your_jwt_secret
 ---
 
 ### 3️⃣ Run Locally
+
+
 
 ```bash
 npm run start:dev
