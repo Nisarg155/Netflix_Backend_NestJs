@@ -95,6 +95,33 @@ http://localhost:3000
 
 ---
 
+## 🗄️ Database
+
+This project uses a **hosted PostgreSQL database (NeonDB)**.
+
+### Local Setup
+- No local PostgreSQL installation is required
+
+
+Set the database connection in `.env`:
+
+```env
+DATABASE_URL=postgresql://<user>:<password>@<host>/<db>?sslmode=require
+```
+### Setup Database (Prisma)
+
+```bash
+npx prisma generate
+```
+
+
+This will:
+
+* Generate Prisma Client
+
+
+--- 
+
 ## 📘 API Documentation
 
 ### 🔹 Swagger UI (Local Only)
