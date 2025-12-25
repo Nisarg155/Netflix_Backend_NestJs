@@ -159,7 +159,7 @@ You can:
 Deployed backend (Vercel):
 
 ```
-https://netflix-backend-nest-7d0edbo1f-nisarg155s-projects.vercel.app/
+https://netflix-backend-nest-js.vercel.app/
 ```
 
 Use this base URL while testing APIs in Postman.
