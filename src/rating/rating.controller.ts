@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -13,8 +14,9 @@ import { RatingService } from './rating.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorator/current-user.decorator';
 import { type UserDetailsType } from '../auth/type/userDetails.type';
-import { AddRatingDto } from './add-rating.dto';
+import { AddRatingDto } from './dto/add-rating.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { UpdateRatingDto } from './dto/update-rating.dto';
 
 @Controller('rating')
 export class RatingController {
@@ -51,5 +53,16 @@ export class RatingController {
     @Param('id') id: string,
   ) {
     return this.ratingService.fetchRating(user, id);
+  }
+
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(JwtAuthGuard)
+  @Put('update')
+  @HttpCode(HttpStatus.OK)
+  async updateRating(
+    @CurrentUser() user: UserDetailsType,
+    @Body() ratingData: UpdateRatingDto,
+  ) {
+    return this.ratingService.updateRating(user, ratingData);
   }
 }
